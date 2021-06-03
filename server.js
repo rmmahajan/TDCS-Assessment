@@ -2,7 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const app = express();
-const port = 4000;
+const PORT = process.env.PORT || 4000;
+const User = require('./models/user-model');
+const Todos = require('./models/todos-model');
 const ObjectId = require("mongoose").Types.ObjectId;
 app.use(cors());
 app.use(express.json());
@@ -14,34 +16,21 @@ mongoose.connect("mongodb+srv://user:user123@users.qllx3.mongodb.net/myFirstData
   useUnifiedTopology: true
 });
 
+if(process.env.NODE_ENV === "production"){
+  app.use(express.static("client/build"));
+  const path = require("path");
+  app.get("*", (req,res) => {
+    res.sendFile(path.resolve(__dirname,'client','build','index.html'));
+  });
+}
+
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function () {
-  app.listen(port, () => {
-    console.log(`App listening at http://localhost:${port}`);
+  app.listen(PORT, () => {
+    console.log(`App listening at http://localhost:${PORT}`);
   });
 });
-
-// User schema for login/register
-const userSchema = new mongoose.Schema({
-  username: String,
-  password: String,
-});
-const User = mongoose.model("User", userSchema);
-
-// Todo list schema
-const todosSchema = new mongoose.Schema({
-  userId: mongoose.Schema.ObjectId,
-  todos: [
-    {
-      checked: Boolean,
-      text: String,
-      id: String,
-    },
-  ],
-});
-const Todos = mongoose.model("Todos", todosSchema);
-
 
 // Post request to register user
 app.post("/register", async (req, res) => {
