@@ -43,9 +43,11 @@ export default function Register() {
       <form onSubmit={register}>
       <div className="form-group">
         <input
+          pattern="[^\s]+"
           className="form-control"
+          required
           onChange={(e) => setUsername(e.target.value)}
-          placeholder="username"
+          placeholder="username (without space)"
         />
         </div>
         <br />
@@ -53,6 +55,7 @@ export default function Register() {
         <input
           className="form-control"
           type="password"
+          required
           onChange={(e) => setPassword(e.target.value)}
           placeholder="password"
         />

@@ -108,14 +108,43 @@ body, html, .App, #root, .auth-wrapper {
 }
 
 
-@media screen and (max-width: 300px) {
+@media (max-width:768px){
+  .flex-container {
+    flex-direction: column;
+  }
+  .flex-container-div {
+    flex-direction: column;
+    width: 22.5rem;
+  }
+  .flex-container,.auth-inner {
+    width: 22.5rem;
+  }
+  .flex-card-right {
+    height: 15rem;
+    width: 15rem;
+    margin: auto;
+  }
+  .flex-card-left {
+    height: 15rem;
+    width: 15rem;
+    margin: auto;
+  }
+  .flex-item-right,.flex-item-left {
+    height: 15rem;
+    width: 15rem;
+    margin: auto;
+  }
+  .tablediv {
+    width: 22rem !important;
+    margin: auto;
+  }
+}
+
+/* @media screen and (max-width: 300px) {
   .flex-container {
     flex-direction: column;
   }
   .flex-container-div {
     flex-direction: column;
   }
-  Navbar {
-    width: 100%;
-  }
-}
+} */

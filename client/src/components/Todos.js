@@ -173,9 +173,9 @@ export default function Todos() {
           </form>
         </div>
       </div>
-      <table style={{margin:"auto",width:"700px",backgroundColor:"aliceblue"}}>
+      <table className="tablediv" style={{margin:"auto",width:"700px",backgroundColor:"aliceblue"}}>
         <tbody>
-        {getTodo.map((todo,index) => (
+        { todos.length!=0 && getTodo.map((todo,index) => (
         <tr key={todo.id}>
           <td style={{padding: "20px",fontSize: "19px",textAlign: "left"}}>
             <input

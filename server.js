@@ -16,13 +16,6 @@ mongoose.connect("mongodb+srv://user:user123@users.qllx3.mongodb.net/myFirstData
   useUnifiedTopology: true
 });
 
-if(process.env.NODE_ENV === "production"){
-  app.use(express.static("client/build"));
-  const path = require("path");
-  app.get("*", (req,res) => {
-    res.sendFile(path.resolve(__dirname,'client','build','index.html'));
-  });
-}
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -34,6 +27,8 @@ db.once("open", function () {
 
 // Post request to register user
 app.post("/register", async (req, res) => {
+
+  try {
   const { username, password } = req.body;
   const user = await User.findOne({ username }).exec();
   if (user) {
@@ -47,10 +42,15 @@ app.post("/register", async (req, res) => {
   res.json({
     message: "success",
   });
+}
+catch(err){
+  console.log(err)
+}
 });
 
 // Post request to login user
 app.post("/login", async (req, res) => {
+  try{
   const { username, password } = req.body;
   const user = await User.findOne({ username }).exec();
   if (!user || user.password !== password) {
@@ -63,10 +63,14 @@ app.post("/login", async (req, res) => {
   res.json({
     message: "success",
   });
+}catch(err){
+  console.log(err)
+}
 });
 
 // Post request to add tasks to database
 app.post("/todos", async (req, res) => {
+  try{
   const { authorization } = req.headers;
   const [, token] = authorization.split(" ");
   const [username, password] = token.split(":");
@@ -90,10 +94,14 @@ app.post("/todos", async (req, res) => {
     await todos.save();
   }
   res.json(todosItems);
+}catch(err){
+  console.log(err)
+}
 });
 
 // Get request to get the list of tasks from database
 app.get("/todos", async (req, res) => {
+  try{
   const { authorization } = req.headers;
   const [, token] = authorization.split(" ");
   const [username, password] = token.split(":");
@@ -107,11 +115,15 @@ app.get("/todos", async (req, res) => {
   }
   const { todos } = await Todos.findOne({ userId: user._id }).exec();
   res.json(todos);
+}catch(err){
+  console.log(err)
+}
 });
 
 
 // Post request to delete tasks from database
 app.post('/deleteTodos/:id', async (req,res) => {
+  try{
   const { authorization } = req.headers;
   const [, token] = authorization.split(" ");
   const [username, password] = token.split(":");
@@ -144,11 +156,14 @@ app.post('/deleteTodos/:id', async (req,res) => {
       })
 
   }
+}catch(err){
+  console.log(err)
+}
 }); 
 
 // Post request to update the edited task
 app.post('/update/:id',async (req,res) => {
-
+try{
   const { authorization } = req.headers;
   const [, token] = authorization.split(" ");
   const [username, password] = token.split(":");
@@ -180,4 +195,7 @@ app.post('/update/:id',async (req,res) => {
         .catch(err => console.log(err))
       })
   }
+}catch(err){
+  console.log(err)
+}
 });

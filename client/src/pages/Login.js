@@ -51,8 +51,10 @@ export default function Login() {
       <div className="form-group">
         <input
           className="form-control"
+          pattern="[^\s]+"
           onChange={(e) => setUsername(e.target.value)}
-          placeholder="username"
+          placeholder="username (without space)"
+          required
         />
         </div>
         <br />
@@ -62,6 +64,7 @@ export default function Login() {
           type="password"
           onChange={(e) => setPassword(e.target.value)}
           placeholder="password"
+          required
         />
         </div>
         <br />
